@@ -98,11 +98,11 @@ const  AddressBookForm = (props) => {
          }
 
          addressBookService.addingPerson(object).then(response => {
-             alert("data added successfully");
+            alert("data added ...");
              reset();
-             console.log("Data added");
+            
          }).catch(err => {
-             console.log("err while Add")
+             console.log("error while adding try once...")
  
          })
     }
