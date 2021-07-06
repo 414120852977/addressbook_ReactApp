@@ -1,0 +1,22 @@
+{
+  "persons": [
+    {
+      "id": "1",
+      "name": "Ashok",
+      "address": "jalna",
+      "city": "jalna",
+      "state": "Maharashtra",
+      "zipcode": "431005",
+      "phoneNumber": "454878787"
+    },
+    {
+      "name": "Mahadeo",
+      "address": "karve nager",
+      "city": "Pune",
+      "state": "Maharastra",
+      "zipcode": "431001",
+      "phoneNumber": "47878787878",
+      "id": "fV8asdT"
+    }
+  ]
+}

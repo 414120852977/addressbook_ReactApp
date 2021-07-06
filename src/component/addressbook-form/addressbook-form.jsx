@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import ToolBar from './toolbar';
 import CancelIcon from '../../assets/icons/cancelIcon.png'
+
 import './addressbook-form.scss'
+import AddressBookService from '../../service/addressBookService';
 const  AddressBookForm = (props) => {
     let initialValue = {
         name: '',
@@ -67,18 +69,44 @@ const  AddressBookForm = (props) => {
             isError = true;
         }
 
-        let phoneNumberRegex = RegExp('[+]{0,1}[0-9]{1,}\\s[1-9]{1}[0-9]{9}$')
-        if (phoneNumberRegex.test(formValue.phoneNumber)) {
-            isError = false;
-        } else {
-            error.phoneNumber = 'Invalid Phone Number'
-            isError = true;
-        }
+        // let phoneNumberRegex = RegExp('[+]{0,1}[0-9]{1,}\\s[1-9]{1}[0-9]{9}$')
+        // if (phoneNumberRegex.test(formValue.phoneNumber)) {
+        //     isError = false;
+        // } else {
+        //     error.phoneNumber = 'Invalid Phone Number'
+        //     isError = true;
+        // }
 
         await setForm({ ...formValue, error: error })
         return isError;
     }
-   
+    const addressBookService = new AddressBookService();
+    const save =async(event) => {
+         event.preventDefault();
+         if(await validData()) {
+             console.log('error',formValue);
+         return;
+     }
+
+    let object = {
+        name: formValue.name,
+        address: formValue.address,
+        city: formValue.city,
+        state:formValue.state,
+        zipcode: formValue.zipcode,
+        phoneNumber: formValue.phoneNumber
+      }
+
+      addressBookService.addingPerson(object).then(response => {
+          alert("data added successfully");
+          reset();
+          console.log("Data added");
+      }).catch(err => {
+          console.log("err while Add")
+
+      })
+ }
+     
        
     
     const reset = () =>{
@@ -92,7 +120,7 @@ const  AddressBookForm = (props) => {
                 <ToolBar />
     
                 <div className="form-content">
-                    <form className="form " action="#" >
+                    <form className="form " action="#" onSubmit={save}>
                         <div className="form-head">
                             <div className="form-head-text">PERSON ADDRESS FORM</div>
                             <div className="cancel-img"><img src={CancelIcon} alt="cancelIcon" /></div>
