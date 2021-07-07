@@ -3,6 +3,7 @@ import ToolBar from './toolbar';
 import CancelIcon from '../../assets/icons/cancelIcon.png'
 import './addressbook-form.scss'
 import AddressBookService from '../../service/addressbookservice';
+import { useHistory } from 'react-router-dom';
 const  AddressBookForm = (props) => {
     let initialValue = {
         name: '',
@@ -80,7 +81,9 @@ const  AddressBookForm = (props) => {
         await setForm({ ...formValue, error: error })
         return isError;
     }
+    
    const addressBookService = new AddressBookService();
+   const history = useHistory();
        const save =async(event) => {
             event.preventDefault();
             if(await validData()) {
@@ -99,6 +102,7 @@ const  AddressBookForm = (props) => {
 
          addressBookService.addingPerson(object).then(response => {
             alert("data added ...");
+            history.push("/homePage");
              reset();
             
          }).catch(err => {

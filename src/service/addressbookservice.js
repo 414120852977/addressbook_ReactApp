@@ -8,4 +8,7 @@ export default class AddressBookService {
     addingPerson(data) {
         return AxiosService.postService(`${this.baseUrl}persons`, data);
     }
+    getPerson() {
+        return AxiosService.getService(`${this.baseUrl}`);
+    }
 }
