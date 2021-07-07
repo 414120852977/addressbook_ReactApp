@@ -1,15 +1,6 @@
 {
   "persons": [
     {
-      "id": "1",
-      "name": "Ashok",
-      "address": "jalna",
-      "city": "jalna",
-      "state": "Maharashtra",
-      "zipcode": "431005",
-      "phoneNumber": "454878787"
-    },
-    {
       "name": "Ashok Sitaram Mane",
       "address": "sashtpimplegaon",
       "city": "Pune",
@@ -26,33 +17,6 @@
       "zipcode": "431005",
       "phoneNumber": "8745885965",
       "id": "fIvQpQI"
-    },
-    {
-      "name": "sanket",
-      "address": "jalna",
-      "city": "Noida",
-      "state": "Rajasthan",
-      "zipcode": "4454",
-      "phoneNumber": "454578787",
-      "id": "u9QFg3E"
-    },
-    {
-      "name": "Satish",
-      "address": "Aurangabad",
-      "city": "Mysore",
-      "state": "Maharastra",
-      "zipcode": "431005",
-      "phoneNumber": "8459214148",
-      "id": "qvUPofi"
-    },
-    {
-      "name": "Rajiv",
-      "address": "saxena nagar",
-      "city": "Pune",
-      "state": "Maharastra",
-      "zipcode": "431005",
-      "phoneNumber": "8745885965",
-      "id": "tLQ4rvv"
     },
     {
       "name": "Rajiv",

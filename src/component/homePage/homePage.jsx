@@ -46,7 +46,7 @@ class HomePage extends React.Component {
                     </div>
                 </div>
                 <div className="table-main">
-                    <Display addressArray={this.setState.addressArray}></Display>
+                    <Display addressArray={this.state.addressArray}></Display>
                 </div>
             </div>
         )
