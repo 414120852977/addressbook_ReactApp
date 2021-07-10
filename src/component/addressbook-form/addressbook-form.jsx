@@ -3,22 +3,27 @@ import ToolBar from './toolbar';
 import CancelIcon from '../../assets/icons/cancelIcon.png'
 import './addressbook-form.scss'
 import AddressBookService from '../../service/addressbookservice';
-import { useHistory } from 'react-router-dom';
+import { useHistory,useParams, Link, withRouter } from 'react-router-dom';
 const  AddressBookForm = (props) => {
+    const addressbookService = new AddressBookService();
     let initialValue = {
-        name: '',
+        firstName: '',
+        lastName: '',
         address: '',
-        city: '',
+        citys: '',
         state: '',
-        zipcode: '',
+        zip: '',
+        email: '',
         phoneNumber: '',
         isUpdate: false,
         error: {
-            name: '',
+            firstName: '',
+            lastName: '',
             address: '',
-            city: '',
+            citys: '',
             state: '',
-            zipcode: '',
+            zip: '',
+            email: '',
             phoneNumber: ''
         }
     }
@@ -30,20 +35,30 @@ const  AddressBookForm = (props) => {
     const validData = async () => {
         let isError = false;
         let error = {
-            name: '',
+            firstName: '',
+            lastName: '',
             address: '',
-            city: '',
+            citys: '',
             state: '',
-            zipcode: '',
-            phoneNumber: '',
+            zip: '',
+            email: '',
+            phoneNumber: ''
 
         }
 
         let nameRegex = RegExp('^[A-Z]{1}[a-zA-Z\\s]{2,}$')
-        if (nameRegex.test(formValue.name)) {
+        if (nameRegex.test(formValue.firstName)) {
             isError = false;
         } else {
-            error.name = 'Invalid Name'
+            error.name = 'Invalid  First Name'
+            isError = true;
+        }
+
+        let lastnameRegex = RegExp('^[A-Z]{1}[a-zA-Z\\s]{2,}$')
+        if (lastnameRegex.test(formValue.lastName)) {
+            isError = false;
+        } else {
+            error.name = 'Invalid  lastName Name'
             isError = true;
         }
 
@@ -55,8 +70,8 @@ const  AddressBookForm = (props) => {
             isError = true;
         }
 
-        if (formValue.city === '') {
-            error.city = 'City is required field'
+        if (formValue.citys === '') {
+            error.citys = 'City is required field'
             isError = true;
         }
 
@@ -65,8 +80,8 @@ const  AddressBookForm = (props) => {
             isError = true;
         }
 
-        if (formValue.zipcode === '') {
-            error.zipcode = 'Zipcode is required field'
+        if (formValue.zip === '') {
+            error.zip = 'Zipcode is required field'
             isError = true;
         }
 
@@ -84,6 +99,34 @@ const  AddressBookForm = (props) => {
     
    const addressBookService = new AddressBookService();
    const history = useHistory();
+
+    const params = useParams();
+    console.log(params.id);
+
+    useEffect(() => {
+        if (params.id) {
+            getPersonById(params.id);
+        }
+    }, []);
+
+    const getPersonById = (id) => {
+        console.log("getPersonById",id);
+        addressBookService.getPersonById(id).then(responseData => {
+            console.log("getByPerons Data", responseData.data)
+            setForm({
+                ...formValue,
+                id: responseData.data.id,
+                name: responseData.data.name,
+                address: responseData.data.address,
+                city: responseData.data.city,
+                state: responseData.data.state,
+                zipcode: responseData.data.zipcode,
+                phoneNumber: responseData.data.phoneNumber,
+                isUpdate: true
+            })
+            console.log(responseData.data)
+        })
+    }
        const save =async(event) => {
             event.preventDefault();
             if(await validData()) {
@@ -92,15 +135,28 @@ const  AddressBookForm = (props) => {
         }
 
        let object = {
-           name: formValue.name,
+           firstName: formValue.firstName,
+           lastName: formValue.lastName,
            address: formValue.address,
-           city: formValue.city,
+           citys: formValue.citys,
            state:formValue.state,
-           zipcode: formValue.zipcode,
+           zip: formValue.zip,
+           email:formValue.email,
            phoneNumber: formValue.phoneNumber
          }
-
-         addressBookService.addingPerson(object).then(response => {
+         //new added code
+         if (formValue.isUpdate) {
+            addressbookService.updatePerson(params.id, object).then(response =>{
+                console.log(response.data)
+                alert("Data Updated Sucessfully", response.data);
+                history.push("/");
+                console.log("updated", response.data)
+            }).catch(err => {
+                alert("Error while updating data", err)
+            })
+        } else {
+            //end code
+            addressBookService.addingPerson(object).then(response => {
             alert("data added ...");
             history.push("/homePage");
              reset();
@@ -110,6 +166,7 @@ const  AddressBookForm = (props) => {
  
          })
     }
+}
         
     
     const reset = () =>{
@@ -130,10 +187,16 @@ const  AddressBookForm = (props) => {
                         </div>
     
                         <div className="row-content">
-                            <label htmlFor="name" className="label text"></label>
-                            <input type="text" className="input" value={formValue.name} onChange={changeValue} id="name" name="name" placeholder="Full Name.." required />
+                            <label htmlFor="firstName" className="label text"></label>
+                            <input type="text" className="input" value={formValue.firstName} onChange={changeValue} id="firstName" name="firstName" placeholder="first Name.." required />
                         </div>
-                        <div className="error-output">{formValue.error.name}</div>
+                        <div className="error-output">{formValue.error.firstName}</div>
+
+                        <div className="row-content">
+                            <label htmlFor="lastName" className="label text"></label>
+                            <input type="text" className="input" value={formValue.lastName} onChange={changeValue} id="lastName" name="lastName" placeholder="Last Name.." required />
+                        </div>
+                        <div className="error-output">{formValue.error.lastName}</div>
     
                         <div className="row-content">
                             <label htmlFor="address" className="label text"></label>
@@ -144,7 +207,7 @@ const  AddressBookForm = (props) => {
                         <div className="row-content">
                             <label htmlFor="address" className="label text"></label>
                             <div>
-                                <select id="city" name="city" value={formValue.city} onChange={changeValue} required>
+                                <select id="citys" name="citys" value={formValue.citys} onChange={changeValue} required>
                                     <option value="">Select City</option>
                                     <option value="Agra">Agra</option>
                                     <option value="Bangalore">Bangalore</option>
@@ -161,7 +224,7 @@ const  AddressBookForm = (props) => {
                                     <option value="Pune">Pune</option>
                                     <option value="Ranchi">Ranchi</option>
                                     <option value="Roorkee">Roorkee</option>
-                                    <option value="Udaipur">Udaipur</option>
+                                    
                                     
                                 </select>
                                 
@@ -178,7 +241,7 @@ const  AddressBookForm = (props) => {
                                     <option value="Uttar Pradesh">Uttar Pradesh</option>
                                 </select>
                                 
-                                <input type="number" className="input-code" onChange={changeValue} value={formValue.zipcode} id="zipcode" name="zipcode" placeholder="Zip Code.." required />
+                                <input type="number" className="input-code" onChange={changeValue} value={formValue.zip} id="zip" name="zip" placeholder="Zip Code.." required />
                             </div>
                                 
                         </div>
@@ -187,6 +250,13 @@ const  AddressBookForm = (props) => {
                             <label htmlFor="number" className="label text"></label>
                             <input type="text" className="input" value={formValue.phoneNumber} onChange={changeValue} id="phoneNumber" name="phoneNumber" placeholder="Phone Number.." />
                             <div className="error-output">{formValue.error.phoneNumber}</div>
+                        </div>
+
+
+                        <div className="row-content">
+                            <label htmlFor="email" className="label text"></label>
+                            <input type="email" className="input" value={formValue.email} onChange={changeValue} id="email" name="email" placeholder="email.." />
+                            <div className="error-output">{formValue.error.email}</div>
                         </div>
                         <div className="button-parent">
                             <div className="add-reset">

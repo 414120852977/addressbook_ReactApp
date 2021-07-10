@@ -14,16 +14,16 @@ class HomePage extends React.Component {
         this.getPerson();
     }
 
-    addressbooService = new AddressbookService();
+ addressbookService = new AddressbookService();
     
-    getPerson = () => {
-        this.addressbooService.getPerson().then(responseData => {
-            console.log("Data after get call", responseData.data);
-            this.setState({ addressArray: responseData.data })
-        }).catch(err => {
-            console.log("Error while get", err);
-        })
-    }
+ getPerson = () => {
+    this.addressbookService.getPerson().then(responseData => {
+        console.log("Data after get call", responseData.data.data);
+        this.setState({ addressArray: responseData.data.data })
+    }).catch(err => {
+        console.log("Error while get", err);
+    })
+}
 
     render() {
         return (

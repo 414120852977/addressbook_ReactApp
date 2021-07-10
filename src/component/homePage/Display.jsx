@@ -7,8 +7,8 @@ import { element } from 'prop-types';
 import AddressBookService from '../../service/addressbookservice';
 const addressbookService = new AddressBookService();
 const Display = (props) => {
-
-    
+           
+     
     const history =useHistory();
 
     const remove = (id) => {
@@ -20,31 +20,45 @@ const Display = (props) => {
         })
         
     }
+
+    const update = (id) => {
+        props.history.push(`/addressbook-form/${id}`)
+    }
+
     return(
+
+        
         <div className="table-main">
+            <div>
+            <img src={deleteIcon} onClick={() => remove(element.id)} alt="Delete" />
+                </div>
             <table id="display" className="table">
             <tbody>
                 <tr key={-1}>
-                    <th>Name</th>
+                    <th>firstName</th>
+                    <th>lastName</th>
                     <th>Address</th>
-                    <th>City</th>
+                    <th>Citys</th>
                     <th>State</th>
-                    <th>zipcode</th>
+                    <th>zip</th>
+                    <th>email</th>
                     <th>PhoneNumber</th>
                     <th>Actions</th>
                 </tr>
                 {
                     props.addressArray && props.addressArray.map((element, id) => (
                         <tr key={id}>
-                            <td>{element.name}</td>
+                            <td>{element.firstName}</td>
+                            <td>{element.lastName}</td>
                             <td>{element.address}</td>
-                            <td>{element.city}</td>
+                            <td>{element.citys}</td>
                             <td>{element.state}</td>
-                            <td>{element.zipcode}</td>
+                            <td>{element.zip}</td>
+                            <td>{element.email}</td>
                             <td>{element.phoneNumber}</td>
                             <td>
                                 <img src={deleteIcon} onClick={() => remove(element.id)} alt="Delete" />
-                                <img src={editIcon} alt="Edit" />
+                                <img src={editIcon} onClick={() => update(element.id)} alt="Edit" />
                             </td>    
                         </tr>
                     ))

@@ -13,6 +13,7 @@ function App() {
     </Route>
         <Route exact path="/addressbook-form" component={AddressBookForm}>
         </Route>
+        <Route exact path="/addressbook-form/:id" component={AddressBookForm} />
           </Switch>
         </Router>
     </div>
